@@ -66,6 +66,10 @@ update_agent_file() {
             sed -i.bak "s|\[ACTUAL STRUCTURE FROM PLANS\]|src/\ntests/|" "$temp_file"
         fi
         
+        # Add agent tools
+        AGENT_TOOLS="*   **\`scripts/run-command.sh\`**: Execute a shell command. Usage: \`./scripts/run-command.sh \\"your command here\\"\`"
+        sed -i.bak "s|\[AGENT_TOOLS\]|$AGENT_TOOLS|" "$temp_file"
+
         # Add minimal commands
         if [[ "$NEW_LANG" == *"Python"* ]]; then
             COMMANDS="cd src && pytest && ruff check ."
@@ -105,6 +109,16 @@ from datetime import datetime
 # Read existing file
 with open("$target_file", 'r') as f:
     content = f.read()
+
+# Add Agent Tools if not present
+if '## Agent Tools' not in content:
+    structure_section = re.search(r'(## Project Structure\n\`\`\`\n.*?\n\`\`\`\n\n)', content, re.DOTALL)
+    if structure_section:
+        tools_text = """## Agent Tools
+*   **`scripts/run-command.sh`**: Execute a shell command. Usage: `./scripts/run-command.sh "your command here"`
+
+"""
+        content = content.replace(structure_section.group(1), structure_section.group(1) + tools_text)
 
 # Check if new tech already exists
 tech_section = re.search(r'## Active Technologies\n(.*?)\n\n', content, re.DOTALL)

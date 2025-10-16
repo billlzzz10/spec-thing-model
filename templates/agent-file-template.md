@@ -10,6 +10,9 @@ Auto-generated from all feature plans. Last updated: [DATE]
 [ACTUAL STRUCTURE FROM PLANS]
 ```
 
+## Agent Tools
+[AGENT_TOOLS]
+
 ## Commands
 [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES]
 

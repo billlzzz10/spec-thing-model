@@ -835,6 +835,52 @@ def init(
 
 
 @app.command()
+def onboard():
+    """
+    Generate an analysis template for an existing project.
+
+    This command creates an `000-onboarding-analysis.md` file in the
+    current directory. This file serves as a guide for the agent to
+    analyze a "brownfield" project before starting new feature development.
+    """
+    show_banner()
+    console.print(Panel.fit(
+        "[bold cyan]Onboarding Existing Project[/bold cyan]\n"
+        "Generating analysis template...",
+        border_style="cyan"
+    ))
+
+    template_name = "onboarding-template.md"
+    output_name = "000-onboarding-analysis.md"
+
+    # The script runs from the root of the repo, so we can use relative paths
+    template_path = Path("templates") / template_name
+    output_path = Path.cwd() / output_name
+
+    if not template_path.exists():
+        console.print(f"[red]Error:[/red] Template file not found at '{template_path}'")
+        raise typer.Exit(1)
+
+    if output_path.exists():
+        console.print(f"[yellow]Warning:[/yellow] '{output_name}' already exists.")
+        overwrite = typer.confirm("Do you want to overwrite it?")
+        if not overwrite:
+            console.print("[yellow]Operation cancelled.[/yellow]")
+            raise typer.Exit(0)
+
+    try:
+        shutil.copy(template_path, output_path)
+        console.print(f"[green]✓[/green] Successfully created '{output_name}'")
+        console.print("\n[bold]Next steps:[/bold]")
+        console.print(f"1. Open [bold magenta]{output_name}[/bold magenta]")
+        console.print("2. Follow the instructions to have the agent analyze the project.")
+        console.print("3. Once the analysis is complete, you can start creating new specs with [bold cyan]/specify[/].")
+    except Exception as e:
+        console.print(f"[red]Error:[/red] Could not create file: {e}")
+        raise typer.Exit(1)
+
+
+@app.command()
 def check():
     """Check that all required tools are installed."""
     show_banner()

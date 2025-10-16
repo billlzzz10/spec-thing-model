@@ -60,6 +60,16 @@ Use `/tasks` to create an actionable task list, then ask your agent to implement
 
 For detailed step-by-step instructions, see our [comprehensive guide](./spec-driven.md).
 
+### Onboarding an Existing Project
+
+If you want to use the agent on an existing project ("brownfield" development), you can use the `onboard` command. This will create a guided analysis file to help the agent understand your project before you start creating specifications.
+
+```bash
+specify onboard
+```
+
+This will generate an `000-onboarding-analysis.md` file in your current directory with steps for the agent to follow.
+
 ## 📚 Core philosophy
 
 Spec-Driven Development is a structured process that emphasizes:
