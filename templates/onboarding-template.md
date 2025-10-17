@@ -59,8 +59,8 @@ A project's tests are a great source of information about its behavior.
 
 **Recommended Command:**
 *   *This will vary by project. Based on your findings from Step 2, determine the correct command.*
-*   Example for a Node.js project: `./scripts/run-command.sh "npm install && npm test"`
-*   Example for a Python project with pytest: `./scripts/run-command.sh "pip install -r requirements.txt && pytest"`
+*   Example for a Node.js project: `bash ./scripts/run-command.sh "npm install && npm test"`
+*   Example for a Python project with pytest: `bash ./scripts/run-command.sh "python -m pip install -r requirements.txt && pytest"`
 
 **Analysis:**
 *   *What testing framework is used?*
