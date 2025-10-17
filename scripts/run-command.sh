@@ -1,7 +1,7 @@
 #!/bin/bash
 # A script to execute a command and return its output.
 
-set -euo pipefail
+set -e
 
 if [ "$#" -eq 0 ]; then
     echo "Usage: $0 <command>"
