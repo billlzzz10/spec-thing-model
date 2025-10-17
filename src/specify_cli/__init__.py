@@ -1155,6 +1155,57 @@ def init(
     console.print(enhancements_panel)
 
 @app.command()
+def onboard():
+    """
+    Generate an analysis template for an existing project.
+
+    This command creates an `000-onboarding-analysis.md` file in the
+    current directory. This file serves as a guide for the agent to
+    analyze a "brownfield" project before starting new feature development.
+    """
+    show_banner()
+    console.print(Panel.fit(
+        "[bold cyan]Onboarding Existing Project[/bold cyan]\n"
+        "Generating analysis template...",
+        border_style="cyan"
+    ))
+
+    template_name = "onboarding-template.md"
+    output_name = "000-onboarding-analysis.md"
+
+    # Prefer package-local templates directory (when installed), fallback to repo-relative "templates"
+    package_templates = Path(__file__).parent / "templates"
+    package_template = package_templates / template_name
+    repo_template = Path("templates") / template_name
+    template_path = package_template if package_template.is_file() else repo_template
+    output_path = Path.cwd() / output_name
+
+    if not template_path.exists():
+        console.print(f"[red]Error:[/red] Template file not found at '{template_path}'")
+        raise typer.Exit(1)
+
+    if output_path.exists():
+        console.print(f"[yellow]Warning:[/yellow] '{output_name}' already exists.")
+        overwrite = typer.confirm("Do you want to overwrite it?")
+        if not overwrite:
+            console.print("[yellow]Operation cancelled.[/yellow]")
+            raise typer.Exit(0)
+
+    try:
+        # Make sure destination directory exists (should be cwd, but be defensive)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(template_path, output_path)
+        console.print(f"[green]✓[/green] Successfully created '{output_name}'")
+        console.print("\n[bold]Next steps:[/bold]")
+        console.print(f"1. Open [bold magenta]{output_name}[/bold magenta]")
+        console.print("2. Follow the instructions to have the agent analyze the project.")
+        console.print("3. Once the analysis is complete, you can start creating new specs with [bold cyan]/specify[/].")
+    except Exception as e:
+        console.print(f"[red]Error:[/red] Could not create file: {e}")
+        raise typer.Exit(1)
+
+
+@app.command()
 def check():
     """Check that all required tools are installed."""
     show_banner()
