@@ -1173,8 +1173,11 @@ def onboard():
     template_name = "onboarding-template.md"
     output_name = "000-onboarding-analysis.md"
 
-    # The script runs from the root of the repo, so we can use relative paths
-    template_path = Path("templates") / template_name
+    # Prefer package-local templates directory (when installed), fallback to repo-relative "templates"
+    package_templates = Path(__file__).parent / "templates"
+    package_template = package_templates / template_name
+    repo_template = Path("templates") / template_name
+    template_path = package_template if package_template.is_file() else repo_template
     output_path = Path.cwd() / output_name
 
     if not template_path.exists():
