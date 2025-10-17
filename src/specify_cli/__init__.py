@@ -869,7 +869,9 @@ def onboard():
             raise typer.Exit(0)
 
     try:
-        shutil.copy(template_path, output_path)
+        # Make sure destination directory exists (should be cwd, but be defensive)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(template_path, output_path)
         console.print(f"[green]✓[/green] Successfully created '{output_name}'")
         console.print("\n[bold]Next steps:[/bold]")
         console.print(f"1. Open [bold magenta]{output_name}[/bold magenta]")
