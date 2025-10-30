@@ -64,7 +64,7 @@ specify check
 To upgrade specify run:
 
 ```bash
-uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git
+uv tool install specify-cli --force --from git+https://github.com/billlzzz10/spec-thing-model.git
 ```
 
 #### Option 2: One-time Usage
